@@ -2,10 +2,14 @@ require 'date'
 
 class SystemDatePicker 
   def yesterday_string 
-    (Date.today - 1).strftime("%Y_%m_%d")
+    _format Date.today - 1
   end
 
   def today_string 
-    (Date.today).strftime("%Y_%m_%d")
+    _format Date.today
+  end
+
+  def _format date 
+    date.strftime("%Y_%m_%d")
   end
 end
