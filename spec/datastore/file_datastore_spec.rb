@@ -1,7 +1,7 @@
 require_relative "../../src/datastore/file_datastore.rb"
 
 context "" do
-  subject { FileDatastore.new date_picker }
+  subject { FileDatastore.new(date_picker, commit_directory) }
   let(:y_string) { "2019-01-01" }
   let(:t_string) { "2019-01-02" }
   let(:date_picker) do 
@@ -20,6 +20,7 @@ context "" do
       end
     end.new(y_string, t_string)
   end
+  let(:commit_directory) { File.expand_path "~/lib/bod_ceremony/" }
 
   it "exists" do
     expect(subject.class).to eq(FileDatastore)
@@ -34,7 +35,7 @@ context "" do
     end
 
     context "when a yesterday file exists" do 
-      let(:yesterday_file) { File.new("./#{y_string}", "w") }
+      let(:yesterday_file) { File.new("#{commit_directory}/#{y_string}", "w") }
 
       context "with a WIP" do 
         let(:wip) { "TODO" }
@@ -62,7 +63,7 @@ context "" do
 
     it "commits the file" do
       subject.commit_wip "foo"
-      if file = File.open("./#{t_string}")
+      if file = File.open("#{commit_directory}/#{t_string}")
         File.delete(file)
       else
         raise "nope"

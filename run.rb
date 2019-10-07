@@ -6,7 +6,7 @@ require_relative 'src/date_picker/system_date_picker.rb'
 require_relative 'src/io/console_io.rb'
 
 date_picker = SystemDatePicker.new
-datastore = FileDatastore.new date_picker
+datastore = FileDatastore.new(date_picker, File.expand_path("~/.wip_store/"))
 io = ConsoleIO.new
 
 main = Main.new(datastore, io)
