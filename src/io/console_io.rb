@@ -1,5 +1,5 @@
 class ConsoleIO 
-  def prompt_input o
+  def prompt o
     output o
     input
   end
@@ -9,7 +9,7 @@ class ConsoleIO
   end
 
   def input_wip
-    prompt_input "what is your wip?:\n"
+    prompt "what is your wip?:\n"
   end
 
   def output output

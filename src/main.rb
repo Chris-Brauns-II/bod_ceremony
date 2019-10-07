@@ -7,7 +7,7 @@ class Main
     if yesterday_wip.nil?
       @io.input_wip
     else
-      answer = @io.prompt_input "Yesterday you worked on:\n\s\s#{yesterday_wip}\nIs that what you're doing today? (y/n) "
+      answer = @io.prompt "Yesterday you worked on:\n\s\s#{yesterday_wip}\nIs that what you're doing today? (y/n) "
 
       case answer
       when "y" then yesterday_wip

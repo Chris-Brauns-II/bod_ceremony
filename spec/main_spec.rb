@@ -19,10 +19,10 @@ context "when a log from yesterday" do
       end 
 
       def input_wip
-        prompt_input "foo"
+        prompt "foo"
       end
 
-      def prompt_input o
+      def prompt o
         output o
         input
       end 
