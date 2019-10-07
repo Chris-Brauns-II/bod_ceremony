@@ -9,6 +9,8 @@ date_picker = SystemDatePicker.new
 datastore = FileDatastore.new(date_picker, File.expand_path("~/.wip_store/"))
 io = ConsoleIO.new
 
-main = Main.new(datastore, io)
+main = Main.new(io)
 
-main.run
+today_wip = main.yesterday_or_new_prompt(datastore.yesterday_wip)
+
+datastore.commit_wip(today_wip)

@@ -1,39 +1,24 @@
 class Main
-  def initialize(datastore, io)
-    @datastore = datastore
+  def initialize(io)
     @io = io
   end
 
-  def run 
-    @io.output(
-      "You are working on:\n\s\s" +
-      @datastore.commit_wip(
-        _resolve_wip(
-          @datastore.yesterday_wip
-        )
-      )
-    )
-  end
+  def yesterday_or_new_prompt yesterday_wip 
+    if yesterday_wip.nil?
+      @io.input_wip
+    else
+      answer = @io.prompt_input "Yesterday you worked on:\n\s\s#{yesterday_wip}\nIs that what you're doing today? (y/n) "
 
-  def _resolve_wip yesterday_wip 
-    today_wip =
-      if yesterday_wip.nil?
-        _new_wip
+      case answer
+      when "y" then yesterday_wip
+      when "n" then @io.input_wip
       else
-        _yesterday_to_today_wip yesterday_wip
-      end
+        raise "Invalid Answer: #{answer}"
+      end 
+    end 
   end
 
   def _new_wip
-    @io.output "What is your WIP?:" 
-    @io.input
-  end
-
-  def _yesterday_to_today_wip yesterday_wip
-    @io.output "Yesterday you worked on:\n\s\s#{yesterday_wip}\nIs that what you're doing today? (y/n) "
-    answer = @io.input
-
-    return yesterday_wip if answer == "y"
-    return _new_wip if answer == "n"
-  end
+    @io.prompt_input "What is your WIP?:" 
+  end 
 end
