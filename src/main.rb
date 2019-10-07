@@ -5,7 +5,14 @@ class Main
   end
 
   def run 
-    @io.output "You are working on:\n\s\s#{@datastore.commit_wip _resolve_wip @datastore.yesterday_wip}"
+    @io.output(
+      "You are working on:\n\s\s" +
+      @datastore.commit_wip(
+        _resolve_wip(
+          @datastore.yesterday_wip
+        )
+      )
+    )
   end
 
   def _resolve_wip yesterday_wip 
