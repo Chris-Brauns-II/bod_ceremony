@@ -11,6 +11,6 @@ io = ConsoleIO.new
 
 main = Main.new(io)
 
-today_wip = main.yesterday_or_new_prompt(datastore.yesterday_wip)
+today_wip = main.yesterday_or_new_prompt(datastore.yesterday_wip, datastore.today_wip)
 
-datastore.commit_wip(today_wip)
+datastore.commit_wip({"wip" => today_wip})

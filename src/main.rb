@@ -3,7 +3,18 @@ class Main
     @io = io
   end
 
-  def yesterday_or_new_prompt yesterday_wip 
+  def yesterday_or_new_prompt(yesterday_wip, today_wip)
+    if !today_wip.nil?
+      answer = @io.prompt "You have entered:\n\s\s#{today_wip}\nWould you like to change it? (y/n) "
+
+      case answer
+      when "y" then
+      when "n" then return today_wip
+      else
+        raise "Invalid Answer: #{answer}"
+      end
+    end
+
     if yesterday_wip.nil?
       @io.input_wip
     else
@@ -14,11 +25,11 @@ class Main
       when "n" then @io.input_wip
       else
         raise "Invalid Answer: #{answer}"
-      end 
-    end 
+      end
+    end
   end
 
   def _new_wip
-    @io.prompt_input "What is your WIP?:" 
-  end 
+    @io.prompt_input "What is your WIP?:"
+  end
 end

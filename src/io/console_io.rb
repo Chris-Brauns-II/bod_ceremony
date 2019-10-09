@@ -1,10 +1,10 @@
-class ConsoleIO 
+class ConsoleIO
   def prompt o
     output o
     input
   end
 
-  def input 
+  def input
     gets.chomp
   end
 
