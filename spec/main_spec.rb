@@ -56,7 +56,7 @@ context "when a log from yesterday" do
       it "shows Today's new WIP" do
         allow(io).to receive(:input).and_return('n', 'blah')
 
-        expect(io).to receive(:output).with("Yesterday you worked on:\n\s\s#{yesterday_wip}\nIs that what you're doing today? (y/n) ")
+        expect(io).to receive(:output).with("Yesterday you worked on:\n\s\stask_a\nIs that what you're doing today? (y/n) ")
         expect(io).to receive(:output).with("foo")
 
         subject.yesterday_or_new_prompt(yesterday_wip, today_wip)

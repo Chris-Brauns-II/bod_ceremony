@@ -1,6 +1,7 @@
 require_relative "../../src/datastore/file_datastore.rb"
 
 require 'json'
+require 'pry'
 
 context "" do
   subject { FileDatastore.new(date_picker, commit_directory) }
@@ -23,7 +24,7 @@ context "" do
       end
     end.new(y_string, t_string)
   end
-  let(:commit_directory) { File.expand_path "~/lib/bod_ceremony/" }
+  let(:commit_directory) { File.expand_path "." }
 
   it "exists" do
     expect(subject.class).to eq(FileDatastore)
@@ -38,7 +39,7 @@ context "" do
     end
 
     context "when a yesterday file exists" do
-      let(:yesterday_file) { File.new("#{commit_directory}/#{y_string}", "w") }
+      let(:yesterday_file) { File.new("#{commit_directory}/#{y_string}.json", "w") }
 
       context "with a WIP" do
         before do
@@ -65,11 +66,15 @@ context "" do
     end
 
     context "when a today file exists" do
-      let(:today_file) { File.new("#{commit_directory}/#{t_string}", "w") }
+      let(:today_file) { File.new("#{commit_directory}/#{t_string}.json", "w") }
 
       before do
         today_file.write(wip.to_json)
         today_file.close
+      end
+
+      after do
+        File.delete(today_file) if today_file
       end
 
       it "returns today_wip" do
@@ -85,7 +90,7 @@ context "" do
 
     it "commits the file" do
       subject.commit_wip wip
-      if file = File.open("#{commit_directory}/#{t_string}")
+      if file = File.open("#{commit_directory}/#{t_string}.json")
         File.delete(file)
       else
         raise "nope"

@@ -17,7 +17,7 @@ class FileDatastore
   def commit_wip wip
     file_path = _file_path @date_picker.today_string
     file = File.open(file_path, "w")
-    file.puts(wip.to_json)
+    file.write(wip.to_json)
     file.close
     wip
   end
@@ -35,10 +35,10 @@ class FileDatastore
     return nil unless File.exists? file_path
     file = File.open file_path
 
-    JSON.parse(file.read)
+    JSON.parse file.read
   end
 
   def _file_path file_name
-    "#{@commit_directory}/#{file_name}"
+    "#{@commit_directory}/#{file_name}.json"
   end
 end
