@@ -30,6 +30,12 @@ context "when a log from yesterday" do
     end.new(input)
   }
 
+  describe "add completed task" do
+    it "" do
+      subject.add_completed_task "sub_task"
+    end
+  end
+
   context "when a yesterday WIP is nil" do
     let(:yesterday_wip) { nil }
     let(:input) { "foo" }

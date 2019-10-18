@@ -1,7 +1,7 @@
 require_relative "../../src/models/day"
 
 context "" do
-  subject { Day.new(wip) }
+  subject { Day.new(wip, nil) }
   let(:wip) { nil }
 
   it "exists" do

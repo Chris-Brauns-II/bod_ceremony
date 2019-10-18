@@ -1,6 +1,7 @@
 class Day
-  def initialize wip
+  def initialize wip, completed_tasks
     @wip = wip
+    @completed_tasks = completed_tasks
   end
 
   def wip
@@ -9,7 +10,7 @@ class Day
 
   def to_json
     {
-      "wip" => wip
+      "wip" => @wip,
     }.to_json
   end
 end

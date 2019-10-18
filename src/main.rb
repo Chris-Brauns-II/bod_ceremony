@@ -3,6 +3,9 @@ class Main
     @io = io
   end
 
+  def add_completed_task task
+  end
+
   def yesterday_or_new_prompt(yesterday_wip, today_wip)
     if !today_wip.nil?
       answer = @io.prompt "You have entered:\n\s\s#{today_wip}\nWould you like to change it? (y/n) "
