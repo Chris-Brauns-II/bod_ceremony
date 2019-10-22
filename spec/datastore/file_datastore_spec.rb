@@ -30,7 +30,6 @@ context "" do
     expect(subject.class).to eq(FileDatastore)
   end
 
-
   describe ".yesterday_wip" do
     context "when a yesterday file does not exist" do
       it "returns nil" do
@@ -56,6 +55,23 @@ context "" do
         end
       end
     end
+  end
+
+  describe ".today" do
+    let(:today) { Day.new(nil, nil) }
+
+    let(:today_file) { File.new("#{commit_directory}/#{t_string}.json", "w") }
+
+    before do
+      today_file.write(today.to_json)
+      today_file.close
+    end
+
+    after do
+      File.delete(today_file) if today_file
+    end
+
+    it { expect(subject.today).to eq(today) }
   end
 
   describe ".today_wip" do
@@ -94,6 +110,68 @@ context "" do
         File.delete(file)
       else
         raise "nope"
+      end
+    end
+  end
+
+  describe ".today_notes" do
+    context "when a today file exists" do
+      let(:today_file) { File.new("#{commit_directory}/#{t_string}.json", "w") }
+      let(:notes) { ["foo", "bar"] }
+
+      before do
+        today_file.write({ :notes => notes }.to_json )
+        today_file.close
+      end
+
+      after do
+        File.delete(today_file) if today_file
+      end
+
+      it "returns the notes for today" do
+        expect(subject.today_notes).to eq(notes)
+      end
+    end
+  end
+
+  describe ".commit_note" do
+    let(:file_name) { "#{commit_directory}/#{t_string}.json" }
+    let(:today_file) { File.new(file_name, "w") }
+    let(:note) { "foo" }
+
+    context "with no previous notes" do
+      before do
+        today_file.write({ :notes => [] }.to_json )
+        today_file.close
+      end
+
+      after do
+        File.delete(today_file) if today_file
+      end
+
+      it "commits the note" do
+        subject.commit_note note
+
+        file = File.open(file_name).read
+        expect(JSON.parse(file)["notes"]).to eq([note])
+      end
+    end
+
+    context "with a previous note" do
+      before do
+        today_file.write({ :notes => [note] }.to_json )
+        today_file.close
+      end
+
+      after do
+        File.delete(today_file) if today_file
+      end
+
+      it "commits the note" do
+        subject.commit_note note
+
+        file = File.open(file_name).read
+        expect(JSON.parse(file)["notes"]).to eq([note,note])
       end
     end
   end

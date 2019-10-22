@@ -10,6 +10,10 @@ class FileDatastore
     _read_wip_from_file @date_picker.yesterday_string
   end
 
+  def today
+    Day.from_json _read_file @date_picker.today_string
+  end
+
   def today_wip
     _read_wip_from_file @date_picker.today_string
   end
@@ -22,11 +26,36 @@ class FileDatastore
     wip
   end
 
+  def today_notes
+    _read_notes_from_file @date_picker.today_string
+  end
+
+  def commit_note note
+    wip = today_wip
+    notes = today_notes
+    file_path = _file_path @date_picker.today_string
+
+    file = File.open(file_path, "w")
+    file.write({
+      "wip" => wip,
+      "notes" => notes << note,
+    }.to_json)
+    file.close
+    note
+  end
+
   def _read_wip_from_file file_name
     day = _read_file file_name
 
     return if day.nil?
     day["wip"]
+  end
+
+  def _read_notes_from_file file_name
+    day = _read_file file_name
+    return if day.nil?
+
+    day["notes"]
   end
 
   def _read_file file_name
