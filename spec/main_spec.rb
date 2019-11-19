@@ -70,5 +70,16 @@ context "when a log from yesterday" do
         expect { subject.yesterday_or_new_prompt(yesterday_wip, today_wip) }.to raise_error("Invalid Answer: foo")
       end
     end
+
+    context "when a today WIP exists" do
+      let(:today_wip) { "task_a" }
+
+      it "shows today's WIP" do
+        expect(io).to receive(:output).with("You have entered:\n\s\stask_a\nWould you like to change it? (y/n) ")
+        allow(io).to receive(:input).and_return('n')
+
+        subject.yesterday_or_new_prompt(yesterday_wip, today_wip)
+      end
+    end
   end
 end
